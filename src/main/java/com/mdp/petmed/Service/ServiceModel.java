@@ -1,4 +1,4 @@
-package com.mdp.petmed.User;
+package com.mdp.petmed.Service;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,15 +12,18 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="tbl_user")
-public class User {
+@Table(name="tbl_service")
+public class ServiceModel {
     @Id
     @GeneratedValue
     private Long id;
     private String name;
-    private String surname;
-    private String email;
-    private String password;
-    private String role;
+    private Double price;
     private byte[] photo;
+
+    public ServiceModel(String name, Double price, byte[] photo){
+        this.name = name;
+        this.price = price;
+        this.photo = photo;
+    }
 }

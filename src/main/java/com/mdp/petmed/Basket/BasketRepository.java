@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import jakarta.transaction.Transactional;
 
-public interface BasketRepository extends JpaRepository<Basket, Long> {
+public interface BasketRepository extends JpaRepository<BasketModel, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE BasketService bs SET bs.quantity = bs.quantity + 1 WHERE bs.basket.id = :basketId AND bs.service.id = :serviceId")

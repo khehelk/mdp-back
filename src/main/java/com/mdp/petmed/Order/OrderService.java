@@ -1,36 +1,60 @@
 package com.mdp.petmed.Order;
 
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import com.mdp.petmed.Service.Service;
-import com.mdp.petmed.User.User;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.mdp.petmed.Service.ServiceModel;
+import com.mdp.petmed.User.UserModel;
+import com.mdp.petmed.User.UserRepository;
 
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name="tbl_order_service")
+@Service
 public class OrderService {
-    @EmbeddedId
-    private OrderServiceId id;
-    private int quantity;
-    @ManyToOne
-    @JoinColumn(name="order_id")
-    private Order order;
-    @ManyToOne
-    @JoinColumn(name="service_id")
-    private Service service;
+    private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
+    private final OrderServiceRepository orderServiceRepository;
 
-    public OrderService(Order order, Service service, int quantity) {
-        this.id = new OrderServiceId(order.getId(), service.getId());
-        this.order = order;
-        this.service = service;
-        this.quantity = quantity;
+    public OrderService(OrderRepository orderRepository, UserRepository userRepository, OrderServiceRepository orderServiceRepository) {
+        this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
+        this.orderServiceRepository = orderServiceRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public OrderModel findOrderById(Long id){
+        return orderRepository.getReferenceById(id);
+    }
+
+    @Transactional
+    public OrderModel createOrder(OrderDTO orderDTO){
+        OrderModel order = new OrderModel(orderDTO.getDate(), orderDTO.getCity(), orderDTO.getStreet(), orderDTO.getHouse(), orderDTO.getSubtotal(), orderDTO.getTaxes(), orderDTO.getTotal(), userRepository.getReferenceById(orderDTO.getUserId()));
+        return orderRepository.save(order);
+    }
+
+    @Transactional
+    public OrderServiceModel createServiceOrder(OrderServiceModel orderService){
+        return orderServiceRepository.save(orderService);
+    }
+
+    @Transactional
+    public List<OrderModel> getUserOrders(Long userId){
+        UserModel user = userRepository.getReferenceById(userId);
+        return user.getOrders();
+    }
+
+    @Transactional
+    public List<ServiceModel> getServiceFromOrder(Long orderId){
+        OrderModel order = orderRepository.getReferenceById(orderId);
+        return order.getOrderServices()
+                .stream()
+                .map(orderService -> new ServiceModel(orderService.getService().getName(), orderService.getService().getPrice(), orderService.getService().getPhoto()))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteOrder(Long orderId){
+        orderRepository.delete(findOrderById(orderId));
     }
 }

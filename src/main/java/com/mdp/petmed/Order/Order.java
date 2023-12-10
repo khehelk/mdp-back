@@ -1,4 +1,4 @@
-package com.mdp.petmed.Purchase;
+package com.mdp.petmed.Order;
 
 import java.util.Date;
 import java.util.List;

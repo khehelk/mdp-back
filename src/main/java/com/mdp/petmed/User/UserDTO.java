@@ -13,7 +13,9 @@ public class UserDTO {
     private String surname;
     private String email;
     private String password;
-    private String photo;
+    private String role;
+    private int photo;
+    private Long basketId;
 
     public UserDTO(UserModel user){
         this.id = user.getId();
@@ -21,6 +23,8 @@ public class UserDTO {
         this.password = user.getPassword();
         this.name = user.getName();
         this.surname = user.getSurname();
-        this.photo = new String(user.getPhoto(), StandardCharsets.UTF_8);
+        this.role = user.getRole().getRole();
+        this.photo = user.getPhoto();//new String(user.getPhoto(), StandardCharsets.UTF_8);
+        this.basketId = user.getBasket().getId();
     }
 }

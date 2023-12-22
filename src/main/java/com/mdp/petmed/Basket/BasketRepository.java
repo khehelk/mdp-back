@@ -5,23 +5,27 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import jakarta.transaction.Transactional;
+import com.mdp.petmed.Service.ServiceModel;
 
-public interface BasketRepository extends JpaRepository<BasketModel, Long> {
+import jakarta.transaction.Transactional;
+import java.util.List;
+
+
+public interface BasketRepository extends JpaRepository<BasketModel, Long> {   
     @Modifying
     @Transactional
-    @Query("UPDATE BasketService bs SET bs.quantity = bs.quantity + 1 WHERE bs.basket.id = :basketId AND bs.service.id = :serviceId")
+    @Query("UPDATE BasketServiceModel bs SET bs.quantity = bs.quantity + 1 WHERE bs.basket.id = :basketId AND bs.service.id = :serviceId")
     void incrementServiceQuantity(@Param("basketId") Long basketId, @Param("serviceId") Long serviceId);
 
     @Modifying
     @Transactional
-    @Query("UPDATE BasketService bs SET bs.quantity = bs.quantity - 1 WHERE bs.basket.id = :basketId AND bs.service.id = :serviceId")
+    @Query("UPDATE BasketServiceModel bs SET bs.quantity = bs.quantity - 1 WHERE bs.basket.id = :basketId AND bs.service.id = :serviceId")
     void decrementServiceQuantity(@Param("basketId") Long basketId, @Param("serviceId") Long serviceId);
 
     @Transactional
-    @Query("SELECT COUNT(bs) > 0 FROM BasketService bs WHERE bs.basket.id = :basketId AND bs.service.id = :serviceId")
+    @Query("SELECT COUNT(bs) > 0 FROM BasketServiceModel bs WHERE bs.basket.id = :basketId AND bs.service.id = :serviceId")
     boolean existsService(@Param("basketId") Long basketId, @Param("serviceId") Long serviceId);
 
-    @Query("SELECT COALESCE(SUM(bs.service.price * bs.quantity), 0) FROM BasketService bs WHERE bs.basket.id = :userId")
+    @Query("SELECT COALESCE(SUM(bs.service.price * bs.quantity), 0) FROM BasketServiceModel bs WHERE bs.basket.id = :userId")
     double getTotalPriceForUser(@Param("userId") Long userId);
 }

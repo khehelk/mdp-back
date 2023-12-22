@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 public class OrderDTO {
     private Long id;
     private Long date;
-    private Double price;
-    private Long userId;
+    private Double total;
+    private Long creatorUserId;
 
     public OrderDTO(OrderModel order) {
         this.id = order.getId();
-        this.date = order.getDate().getTime();
-        this.price = order.getPrice();
-        this.userId = order.getUser().getId();
+        this.date = order.getDate();
+        this.total = order.getTotal();
+        this.creatorUserId = order.getUser().getId();
     }
 }

@@ -11,12 +11,12 @@ public class ServiceDTO {
     private Long id;
     private String name;
     private Double price;
-    private String photo;
+    private int photo;
 
     public ServiceDTO(ServiceModel service) {
         this.id = service.getId();
         this.name = service.getName();
         this.price = service.getPrice();
-        this.photo = new String(service.getPhoto(), StandardCharsets.UTF_8);
+        this.photo = service.getPhoto();//new String(service.getPhoto(), StandardCharsets.UTF_8);
     }
 }

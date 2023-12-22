@@ -19,17 +19,17 @@ public class OrderModel {
     @Id
     @GeneratedValue
     private Long id;
-    private Date date;
-    private Double price;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "tbl_order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Long date;
+    private Double total;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderServiceModel> orderServices;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserModel user;
 
-    public OrderModel(Date date, Double price, UserModel user){
+    public OrderModel(Long date, Double total, UserModel user){
         this.date = date;
-        this.price = price;
+        this.total = total;
         this.user = user;
     }
 }

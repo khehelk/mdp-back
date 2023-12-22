@@ -24,13 +24,13 @@ public class UserModel {
     private String email;
     private String password;
     private RoleEnum role;
-    private byte[] photo;
+    private int photo;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<OrderModel> orders;
     @OneToOne
     private BasketModel basket;
 
-    public UserModel(String name, String surname, String email, String password, byte[] photo, RoleEnum role) {
+    public UserModel(String name, String surname, String email, String password, int photo, RoleEnum role) {
         this.name = name;
         this.surname = surname;
         this.email = email;

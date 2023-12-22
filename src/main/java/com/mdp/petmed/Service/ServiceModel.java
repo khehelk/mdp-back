@@ -19,9 +19,9 @@ public class ServiceModel {
     private Long id;
     private String name;
     private Double price;
-    private byte[] photo;
+    private int photo;
 
-    public ServiceModel(String name, Double price, byte[] photo){
+    public ServiceModel(String name, Double price, int photo){
         this.name = name;
         this.price = price;
         this.photo = photo;

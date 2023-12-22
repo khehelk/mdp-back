@@ -6,8 +6,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ServiceService {
@@ -18,29 +17,33 @@ public class ServiceService {
     }
 
     @Transactional
-    public ServiceModel insert(String name, Double price, String photo) {
-        ServiceModel service = new ServiceModel(name, price, photo.getBytes());
+    public ServiceModel insert(ServiceDTO serviceDTO) {
+        ServiceModel service = new ServiceModel(serviceDTO.getName(), serviceDTO.getPrice(), serviceDTO.getPhoto());//.getBytes());
         return serviceRepository.save(service);
     }
 
     @Transactional
     public ServiceModel update(ServiceDTO serviceDTO){
-        final ServiceModel service = findService(serviceDTO.getId());
+        final ServiceModel service = getById(serviceDTO.getId());
         service.setName(serviceDTO.getName());
         service.setPrice(serviceDTO.getPrice());
-        service.setPhoto(serviceDTO.getPhoto().getBytes(StandardCharsets.UTF_8));
+        service.setPhoto(serviceDTO.getPhoto());//.getBytes(StandardCharsets.UTF_8));
         return serviceRepository.save(service);
     }
 
     @Transactional
-    public ServiceModel delete(Long id){
-        final ServiceModel curService = findService(id);
-        serviceRepository.delete(curService);
-        return curService;
+    public void delete(Long id) throws Exception{
+        try{
+            final ServiceModel curService = getById(id);
+            serviceRepository.delete(curService);
+        }catch(Exception ex){
+            throw new Exception("Ошибка при удалении сервиса с id " + id);
+        }
+        
     }
 
     @Transactional
-    public ServiceModel findService(Long id){
+    public ServiceModel getById(Long id){
         return serviceRepository.getReferenceById(id);
     }
 

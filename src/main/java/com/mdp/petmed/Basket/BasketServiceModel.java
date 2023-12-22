@@ -8,26 +8,29 @@ import com.mdp.petmed.User.UserModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="tbl_basket_service")
 public class BasketServiceModel {
     @EmbeddedId
-    private BasketServiceId id;
-    private int quantity;
+    private BasketServiceModelId id = new BasketServiceModelId();
     @ManyToOne
-    @JoinColumn(name="basket_id")
-    private BasketModel basket;
+    @MapsId("basketId")
+    BasketModel basket;
     @ManyToOne
-    @JoinColumn(name="service_id")
-    private ServiceModel service;
+    @MapsId("serviceId")
+    ServiceModel service;
+    private int quantity;    
 
-    public BasketServiceModel(BasketModel basket, ServiceModel service, int quantity) {
-        this.id = new BasketServiceId(basket.getId(), service.getId());
+    public BasketServiceModel(BasketModel basket, ServiceModel service, int quantity) {    
+        this.id = new BasketServiceModelId(basket, service);
         this.basket = basket;
         this.service = service;
         this.quantity = quantity;

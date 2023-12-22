@@ -20,7 +20,7 @@ public class UserService {
 
     @Transactional
     public UserModel update(UserDTO user){
-        UserModel userCreate = new UserModel(user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getPhoto().getBytes(StandardCharsets.UTF_8), RoleEnum.USER);
+        UserModel userCreate = new UserModel(user.getName(), user.getSurname(), user.getEmail(), user.getPassword(),  user.getPhoto()/*.getBytes(StandardCharsets.UTF_8) */, RoleEnum.USER);
         return userRepository.save(userCreate);
     }
 
@@ -35,7 +35,7 @@ public class UserService {
 
     @Transactional
     public UserModel signUp(UserDTO user){
-        UserModel userCreate = new UserModel(user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getPhoto().getBytes(StandardCharsets.UTF_8), RoleEnum.USER);
+        UserModel userCreate = new UserModel(user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getPhoto()/*.getBytes(StandardCharsets.UTF_8)*/, RoleEnum.USER);
         return userRepository.save(userCreate);
     }
     

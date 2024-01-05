@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name="tbl_order")
 public class OrderModel {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long date;
     private Double total;

@@ -26,6 +26,6 @@ public interface BasketRepository extends JpaRepository<BasketModel, Long> {
     @Query("SELECT COUNT(bs) > 0 FROM BasketServiceModel bs WHERE bs.basket.id = :basketId AND bs.service.id = :serviceId")
     boolean existsService(@Param("basketId") Long basketId, @Param("serviceId") Long serviceId);
 
-    @Query("SELECT COALESCE(SUM(bs.service.price * bs.quantity), 0) FROM BasketServiceModel bs WHERE bs.basket.id = :userId")
-    double getTotalPriceForUser(@Param("userId") Long userId);
+    @Query("SELECT COALESCE(SUM(bs.service.price * bs.quantity), 0) FROM BasketServiceModel bs WHERE bs.basket.id = :basketId")
+    double getTotalPriceForUser(@Param("basketId") Long basketId);
 }

@@ -1,14 +1,19 @@
 package com.mdp.petmed.Order;
 
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAmount;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mdp.petmed.Basket.BasketService;
 import com.mdp.petmed.Basket.BasketServiceModel;
+import com.mdp.petmed.Report.ReportDTO;
+import com.mdp.petmed.Report.ServiceWithCount;
 import com.mdp.petmed.Service.ServiceModel;
 import com.mdp.petmed.Service.ServiceService;
 import com.mdp.petmed.User.UserModel;
@@ -78,5 +83,19 @@ public class OrderService {
     @Transactional
     public void deleteOrder(Long orderId){
         orderRepository.delete(getById(orderId));
+    }
+
+    @Transactional
+    public ReportDTO getReportOrders(Long dateFrom, Long dateTo){
+        Long twelveMonthsAgo = System.currentTimeMillis() - (12L * 30L * 24L * 60L * 60L * 1000L);
+        return new ReportDTO(
+                orderRepository.countOrdersBetweenDate(dateFrom, dateTo),
+                orderRepository.totalEarnBetweenDate(dateFrom, dateTo),
+                orderRepository.averageCheckBetweenDate(dateFrom, dateTo),
+                orderRepository.getMostFrequentServicesBetweenDate(dateFrom, dateTo, PageRequest.of(0, 10))
+                    .stream()
+                    .map(ServiceWithCount::new)
+                    .toList()
+        );
     }
 }

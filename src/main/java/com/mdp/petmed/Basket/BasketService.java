@@ -37,6 +37,7 @@ public class BasketService {
     @Transactional
     public BasketModel create(UserModel user){
         BasketModel basket = new BasketModel(user);
+        basketRepository.save(basket);
         user.setBasket(basket);
         return basketRepository.save(basket);
     }
@@ -101,7 +102,8 @@ public class BasketService {
 
     @Transactional
     public double getTotalPriceForUserBasket(Long userId){
-        return basketRepository.getTotalPriceForUser(userId);
+        UserModel user = userService.getUserById(userId);
+        return basketRepository.getTotalPriceForUser(user.getBasket().getId());
     }
 
     @Transactional

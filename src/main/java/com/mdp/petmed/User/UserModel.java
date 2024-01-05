@@ -17,20 +17,20 @@ import lombok.NoArgsConstructor;
 @Table(name="tbl_user")
 public class UserModel {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String surname;
     private String email;
     private String password;
     private RoleEnum role;
-    private int photo;
+    private byte[] photo;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<OrderModel> orders;
     @OneToOne
     private BasketModel basket;
 
-    public UserModel(String name, String surname, String email, String password, int photo, RoleEnum role) {
+    public UserModel(String name, String surname, String email, String password, byte[] photo, RoleEnum role) {
         this.name = name;
         this.surname = surname;
         this.email = email;

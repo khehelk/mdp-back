@@ -19,7 +19,7 @@ import lombok.Setter;
 @Table(name="tbl_basket")
 public class BasketModel {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "basket", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BasketServiceModel> basketServices;
